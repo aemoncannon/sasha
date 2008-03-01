@@ -1,0 +1,4 @@
+
+* Newly instantiated SceneTrees should be added to stage automatically, otherwise they are not in a display list.. which violates our invariant.
+
+* Reparenting a SceneTree should automatically remove it from its old parent's children list.
