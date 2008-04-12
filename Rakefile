@@ -55,4 +55,10 @@ task :serve => [] do
   s.start
 end
 
+task :run => [] do
+  system "scala.bat -classpath #{CLASS_PATH} com.scala_anim.MyAppRunner"
+end
+
+task :compile_and_run => [:compile, :run]
+
 task :default => [:compile]
