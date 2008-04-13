@@ -9,14 +9,21 @@ import com.scala_anim.animation._
 class MyApp(width:Int, height:Int) extends App(width, height) {
 
   override def initApp(){
-    val b1 = new Bubble(60)
+    //     for(i <- (1 to 20)){
+    //       val c1 = new RectSprite(40, 40)
+    //       c1.x = i * 50
+    //       c1.y = i * 50
+    //       stage += c1
+    //     }
+
+    val b1 = new Bubble(100)
     b1.x = 200
     b1.y = 200
     stage += b1
 
-    val c1 = new CircleSprite(20)
+    val c1 = new CircleSprite(40)
     stage += c1
-    Anim.tweenXY(c1, 400, 400, 300, Easing.LINEAR_NONE)    
+    Anim.tweenXY(c1, 400, 400, 100, Easing.LINEAR_NONE)    
   }
 
   override def stopApp(){

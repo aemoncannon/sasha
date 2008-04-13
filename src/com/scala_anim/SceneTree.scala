@@ -200,27 +200,28 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
     g.draw(new Rect(boundsWRTGlobal.x, boundsWRTGlobal.y, boundsWRTGlobal.width, boundsWRTGlobal.height))
   }
 
-
   protected def redrawPartially(g:Graphics2D) {
     val intersecting = InvalidationHistory.intersectingRects(boundsForClipping)
     if(!intersecting.isEmpty){
       val clip = union(intersecting)
-      redrawCanvasPartially(g)
-      //      redrawCanvasCompletely(g)
-      for(child <- this){
-	if(clip.intersects(child.boundsForClipping)){
-	  child.redrawPartially(g)
-	}
-      }
+      redrawPartiallyWithClip(g, clip);
     }
     invalidated = false;
   }
 
-  private def redrawCanvasPartially(g:Graphics2D){
+  protected def redrawPartiallyWithClip(g:Graphics2D, clip:Rect) {
+    redrawCanvasPartially(g, clip)
+    for(child <- this){
+      if(clip.intersects(child.boundsForClipping)){
+	child.redrawPartiallyWithClip(g, clip)
+      }
+    }
+  }
+
+  private def redrawCanvasPartially(g:Graphics2D, clip:Rect){
     //    drawGlobalBounds(g)
     g.setClip(null)
     g.setTransform(identTransform)
-    var clip:Rectangle2D = union(InvalidationHistory.intersectingRects(boundsForClipping))
     g.setClip(
       clip.getX.toInt - App.CLIP_PADDING,
       clip.getY.toInt - App.CLIP_PADDING, 

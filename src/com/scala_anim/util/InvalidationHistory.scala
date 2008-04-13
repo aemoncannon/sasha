@@ -16,7 +16,7 @@ object InvalidationHistory{
     for(r <- invalidatedRects){
       g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f))
       g.setTransform(new AffineTransform())
-      g.setColor(Color.green)
+      g.setColor(Color.red)
       g.fill(r)
     }
   }

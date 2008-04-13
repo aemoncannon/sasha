@@ -13,7 +13,7 @@ class Bubble(private val radius:Float) extends Sprite with Draggable {
   canvas.setStroke(Color.white, 2, 0.45f)
   canvas.circle(0, 0, radius)
 
-  if(radius > 15){
+  if(radius > 30){
     for(x <- (1 to 10)){
       val theta = ((2.0f * Math.Pi)/10) * x
       val child = new Bubble(radius/2)

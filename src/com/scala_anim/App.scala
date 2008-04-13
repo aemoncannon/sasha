@@ -81,6 +81,8 @@ abstract class App(width:Int, height:Int) extends JPanel with Runnable with Mous
 
       redraw()
 
+      InvalidationHistory.clear()
+
       try {
 	Thread.sleep(10)
       }
@@ -105,7 +107,6 @@ abstract class App(width:Int, height:Int) extends JPanel with Runnable with Mous
       inval.getHeight.toInt + 2 * App.CLIP_PADDING
     )
     frontGraphics.drawImage(backImage, 0, 0, null)
-    InvalidationHistory.clear()
   }
 
   def drawInvalidationHistory(g:Graphics2D) {

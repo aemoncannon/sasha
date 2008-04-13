@@ -19,11 +19,23 @@ object invalidationSpecs extends Specification {
   }
 
   "InvalidatedHistory" should {
-    "give back a correct list of rects." in {
+    "find intersecting rects.." in {
       InvalidationHistory.clear
       InvalidationHistory.invalidate(new Rectangle(10, 10, 60, 60))
       InvalidationHistory.invalidate(new Rectangle(60, 60, 10, 10))
       InvalidationHistory.intersectingRects(new Rectangle(55, 55, 10, 10)).length must_== 2
+    }
+
+    "find intersecting rects even if provided rect is completely contained." in {
+      InvalidationHistory.clear
+      InvalidationHistory.invalidate(new Rectangle(10, 10, 50, 50))
+      InvalidationHistory.intersectingRects(new Rectangle(15, 15, 5, 5)).length must_== 1
+    }
+
+    "find intersecting rects even if provided rect completely contains." in {
+      InvalidationHistory.clear
+      InvalidationHistory.invalidate(new Rectangle(10, 10, 50, 50))
+      InvalidationHistory.intersectingRects(new Rectangle(5, 5, 100, 100)).length must_== 1
     }
   }
 
