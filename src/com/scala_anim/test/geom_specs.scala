@@ -23,6 +23,20 @@ object geomSpecs extends Specification {
 	  new Rectangle(25, 25, 10, 10)
 	))
       r2 must beLike { case r:Rectangle2D if r.getX == 10 && r.getY == 10 && r.getWidth == 25 && r.getHeight == 25 => true }
+
+      val r3 = union(List(
+	  new Rectangle(0, 0, 10, 5), 
+	  new Rectangle(10, 0, 10, 5), 
+	  new Rectangle(20, 0, 10, 5)
+	))
+      r3 must beLike { case r:Rectangle2D if r.getX == 0 && r.getY == 0 && r.getWidth == 30 && r.getHeight == 5 => true }
+
+      val r4 = union(List(
+	  new Rectangle(0, 0, 10, 5), 
+	  new Rectangle(12, 0, 10, 5), 
+	  new Rectangle(22, 0, 10, 5)
+	))
+      r4 must beLike { case r:Rectangle2D if r.getX == 0 && r.getY == 0 && r.getWidth == 32 && r.getHeight == 5 => true }
     }
   }
 

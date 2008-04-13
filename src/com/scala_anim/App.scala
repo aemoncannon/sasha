@@ -92,16 +92,24 @@ abstract class App(width:Int, height:Int) extends JPanel with Runnable with Mous
   }
 
   def redraw() = synchronized {
+    backGraphics.setClip(null)
     backGraphics.setTransform(identTransform)
+    //    backGraphics.clearRect(0, 0, getWidth, getHeight)
     stage.redraw(backGraphics)
+    //    drawInvalidationHistory(backGraphics)
     val inval = InvalidationHistory.invalidatedRectsUnion
     frontGraphics.setClip(
       inval.getX.toInt - App.CLIP_PADDING, 
       inval.getY.toInt - App.CLIP_PADDING, 
       inval.getWidth.toInt + 2 * App.CLIP_PADDING, 
-      inval.getHeight.toInt + 2 * App.CLIP_PADDING)
+      inval.getHeight.toInt + 2 * App.CLIP_PADDING
+    )
     frontGraphics.drawImage(backImage, 0, 0, null)
     InvalidationHistory.clear()
+  }
+
+  def drawInvalidationHistory(g:Graphics2D) {
+    InvalidationHistory.drawOn(g)
   }
 
   override def paintAll(g:Graphics){

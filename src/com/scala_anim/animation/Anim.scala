@@ -19,7 +19,7 @@ object Anim {
     new FrameAnim(tick, condition)
   }
 
-  def tween(from:Float, to:Float, duration:Int, setter:(Float => Unit), easer:Easer){
+  def tween(from:Float, to:Float, duration:Int, setter:(Float => Unit), easer:Easer) = {
     var t:Int = 0
     doWhile{
       t += 1
@@ -45,7 +45,7 @@ object Anim {
   }
 
   class FrameAnim(tick:( => Unit), condition:( => Boolean)) extends EventDispatcher{
-    val listener:(Event => Unit) = ((e:Event) =>
+    val listener:(Event => Unit) = {(e:Event) =>
       if(condition){
 	tick
 	dispatchEvent(new Event(Anim.UPDATE))
@@ -54,7 +54,7 @@ object Anim {
 	Stage.stage.removeEventListener(PropagatingEvent.ENTER_FRAME, listener, true)
 	dispatchEvent(new Event(Anim.FINISHED))
       }
-    )
+    }
     Stage.stage.addEventListener(PropagatingEvent.ENTER_FRAME, listener, true)
   }
 

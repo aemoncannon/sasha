@@ -10,8 +10,16 @@ import com.scala_anim.geom.Utils._
 
 object InvalidationHistory{
   
-  private val invalidatedSceneTrees = new HashMap[SceneTree, Boolean]()
-  private val invalidatedRects =  new ArrayBuffer[Rectangle2D]()
+  val invalidatedRects =  new ArrayBuffer[Rectangle2D]()
+
+  def drawOn(g:Graphics2D){
+    for(r <- invalidatedRects){
+      g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f))
+      g.setTransform(new AffineTransform())
+      g.setColor(Color.green)
+      g.fill(r)
+    }
+  }
 
   def invalidate(rect:Rectangle2D){
     invalidatedRects += new Rectangle(rect.getX.toInt, rect.getY.toInt, rect.getWidth.toInt, rect.getHeight.toInt);
@@ -31,7 +39,6 @@ object InvalidationHistory{
 
   def clear(){
     invalidatedRects.clear
-    invalidatedSceneTrees.clear
   }
 
 }

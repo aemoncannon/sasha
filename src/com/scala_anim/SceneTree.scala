@@ -1,5 +1,6 @@
 package com.scala_anim
 import java.awt.Color
+import java.awt._
 import java.awt.image.BufferedImage
 import java.awt.Graphics2D
 import java.awt.Shape
@@ -187,17 +188,27 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
     }
   }
 
-  protected def redrawPartially(g:Graphics2D) {
-    //     g.setTransform(identTransform)
-    //     g.setColor(Color.green)
-    //     g.fill(new Rect(boundsWRTGlobal.x, boundsWRTGlobal.y, boundsWRTGlobal.width, boundsWRTGlobal.height))
+  protected def boundsForClipping = {
+    boundsWRTGlobal
+  }
 
-    val intersecting = InvalidationHistory.intersectingRects(boundsWRTGlobal)
+  protected def drawGlobalBounds(g:Graphics2D){
+    g.setClip(null)
+    g.setTransform(identTransform)
+    g.setStroke(new BasicStroke(1))
+    g.setColor(Color.green)
+    g.draw(new Rect(boundsWRTGlobal.x, boundsWRTGlobal.y, boundsWRTGlobal.width, boundsWRTGlobal.height))
+  }
+
+
+  protected def redrawPartially(g:Graphics2D) {
+    val intersecting = InvalidationHistory.intersectingRects(boundsForClipping)
     if(!intersecting.isEmpty){
       val clip = union(intersecting)
       redrawCanvasPartially(g)
+      //      redrawCanvasCompletely(g)
       for(child <- this){
-	if(clip.intersects(child.boundsWRTGlobal)){
+	if(clip.intersects(child.boundsForClipping)){
 	  child.redrawPartially(g)
 	}
       }
@@ -206,14 +217,16 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
   }
 
   private def redrawCanvasPartially(g:Graphics2D){
+    //    drawGlobalBounds(g)
     g.setClip(null)
     g.setTransform(identTransform)
-    var clip:Rectangle2D = union(InvalidationHistory.intersectingRects(globalBounds))
+    var clip:Rectangle2D = union(InvalidationHistory.intersectingRects(boundsForClipping))
     g.setClip(
       clip.getX.toInt - App.CLIP_PADDING,
       clip.getY.toInt - App.CLIP_PADDING, 
       clip.getWidth.toInt + App.CLIP_PADDING * 2, 
-      clip.getHeight.toInt + App.CLIP_PADDING * 2)
+      clip.getHeight.toInt + App.CLIP_PADDING * 2
+    )
     g.setTransform(transformWRTGlobal)
     canvas.drawOn(g)
   }

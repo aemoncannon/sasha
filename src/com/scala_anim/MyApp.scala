@@ -9,13 +9,10 @@ import com.scala_anim.animation._
 class MyApp(width:Int, height:Int) extends App(width, height) {
 
   override def initApp(){
-
-    val b1 = new Bubble(50)
+    val b1 = new Bubble(60)
     b1.x = 200
     b1.y = 200
-
     stage += b1
-
   }
 
   override def stopApp(){

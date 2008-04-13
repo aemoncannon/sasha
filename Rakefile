@@ -28,10 +28,10 @@ task :compile_once => [:clean] do
 end
 
 task :compile_tests => [:clean] do
-  system "fsc.bat -classpath #{TEST_CLASS_PATH} -sourcepath src -d classes #{(SOURCES + TEST_SOURCES).join(' ')}"
+  system "fsc.bat -deprecation -classpath #{TEST_CLASS_PATH} -sourcepath src -d classes #{(SOURCES + TEST_SOURCES).join(' ')}"
 end
 
-task :test => [:clean, :compile_tests] do
+task :test => [:compile_tests] do
   system "scala.bat -classpath #{TEST_CLASS_PATH} com.scala_anim.test.allSpecsRunner"
 end
 

@@ -23,17 +23,17 @@ class Bubble(private val radius:Float) extends Sprite with Draggable {
     }
   }
 
+  val mouseUpListener:(Event => Unit) = {(e:Event) =>
+    e.stopPropagation()
+    stopDrag()
+    val anim = Anim.tweenXY(this, preDragX, preDragY, 30, Easing.BOUNCE_OUT)
+    Stage.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpListener)
+  }
 
   addEventListenerInline(MouseEvent.MOUSE_DOWN){ e =>
     e.stopPropagation
     startDrag(e)
-    def mouseUpListener(e:Event){
-      e.stopPropagation
-      stopDrag()
-      Anim.tweenXY(this, preDragX, preDragY, 30, Easing.BOUNCE_OUT)
-      stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpListener)
-    }
-    stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpListener)
+    Stage.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpListener)
   }
 
 }
