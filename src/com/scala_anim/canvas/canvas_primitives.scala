@@ -41,7 +41,7 @@ trait CanvasShapeStroke extends CanvasPrimitive{
   override def bounds:Rect = {
     val b = super.bounds
     val w = stroke.getLineWidth
-    new Rect(b.x - w/2.0f, b.y - w/2.0f, b.width + w, b.height + w)
+    new Rect(b.x - w/2.0f, b.y - w/2.0f, b.width + w*2.0f, b.height + w*2.0f)
   }
 }
 
