@@ -209,7 +209,7 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
     invalidated = false;
   }
 
-  protected def redrawPartiallyWithClip(g:Graphics2D, clip:Rect) {
+  protected def redrawPartiallyWithClip(g:Graphics2D, clip:Shape) {
     redrawCanvasPartially(g, clip)
     for(child <- this){
       if(clip.intersects(child.boundsForClipping)){
@@ -218,16 +218,16 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
     }
   }
 
-  private def redrawCanvasPartially(g:Graphics2D, clip:Rect){
+  private def redrawCanvasPartially(g:Graphics2D, clip:Shape){
     //    drawGlobalBounds(g)
     g.setClip(null)
     g.setTransform(identTransform)
-    g.setClip(
-      clip.getX.toInt - App.CLIP_PADDING,
-      clip.getY.toInt - App.CLIP_PADDING, 
-      clip.getWidth.toInt + App.CLIP_PADDING * 2, 
-      clip.getHeight.toInt + App.CLIP_PADDING * 2
-    )
+    g.setClip(clip)
+//       clip.getX.toInt - App.CLIP_PADDING,
+//       clip.getY.toInt - App.CLIP_PADDING, 
+//       clip.getWidth.toInt + App.CLIP_PADDING * 2, 
+//       clip.getHeight.toInt + App.CLIP_PADDING * 2
+//     )
     g.setTransform(transformWRTGlobal)
     canvas.drawOn(g)
   }
