@@ -184,7 +184,10 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
       redrawCompletely(g)
     }
     else{
-      redrawPartially(g)
+      val intersecting = InvalidationHistory.intersectingRects(boundsForClipping)
+      if(!intersecting.isEmpty){
+	redrawPartially(g, union(intersecting))
+      }
     }
   }
 
@@ -200,34 +203,26 @@ trait SceneTree extends Collection[SceneTree] with CaptureAndBubbleEventDispatch
     g.draw(new Rect(boundsWRTGlobal.x, boundsWRTGlobal.y, boundsWRTGlobal.width, boundsWRTGlobal.height))
   }
 
-  protected def redrawPartially(g:Graphics2D) {
-    val intersecting = InvalidationHistory.intersectingRects(boundsForClipping)
-    if(!intersecting.isEmpty){
-      val clip = union(intersecting)
-      redrawPartiallyWithClip(g, clip);
+  protected def redrawPartially(g:Graphics2D, clip:Rect) {
+    redrawCanvasPartially(g, clip)
+    for(child <- this){
+      if(clip.intersects(child.boundsForClipping)){
+	child.redrawPartially(g, clip)
+      }
     }
     invalidated = false;
   }
 
-  protected def redrawPartiallyWithClip(g:Graphics2D, clip:Shape) {
-    redrawCanvasPartially(g, clip)
-    for(child <- this){
-      if(clip.intersects(child.boundsForClipping)){
-	child.redrawPartiallyWithClip(g, clip)
-      }
-    }
-  }
-
-  private def redrawCanvasPartially(g:Graphics2D, clip:Shape){
+  private def redrawCanvasPartially(g:Graphics2D, clip:Rect){
     //    drawGlobalBounds(g)
     g.setClip(null)
     g.setTransform(identTransform)
-    g.setClip(clip)
-//       clip.getX.toInt - App.CLIP_PADDING,
-//       clip.getY.toInt - App.CLIP_PADDING, 
-//       clip.getWidth.toInt + App.CLIP_PADDING * 2, 
-//       clip.getHeight.toInt + App.CLIP_PADDING * 2
-//     )
+    g.setClip(
+      clip.getX.toInt - App.CLIP_PADDING,
+      clip.getY.toInt - App.CLIP_PADDING, 
+      clip.getWidth.toInt + App.CLIP_PADDING * 2, 
+      clip.getHeight.toInt + App.CLIP_PADDING * 2
+    )
     g.setTransform(transformWRTGlobal)
     canvas.drawOn(g)
   }

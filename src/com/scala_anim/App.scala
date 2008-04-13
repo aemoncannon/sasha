@@ -13,7 +13,7 @@ import com.scala_anim.util._
 import com.scala_anim.geom.Conversions._
 
 object App{
-  val CLIP_PADDING = 2
+  val CLIP_PADDING = 1
   private val invalidatedRectsQ = new ArrayBuffer[Rectangle]()
   def withInvalidatedRectsQ(func:(ArrayBuffer[Rectangle] => Unit)) = synchronized{ func(invalidatedRectsQ) }
 
@@ -70,6 +70,7 @@ abstract class App(width:Int, height:Int) extends JPanel with Runnable with Mous
 	}
 	q.clear()
       }
+
       stage.propagateEventCaptureOnly(new PropagatingEvent(PropagatingEvent.ENTER_FRAME))
 
       App.withInvalidatedRectsQ{ q =>

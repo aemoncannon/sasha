@@ -16,7 +16,7 @@ class MyApp(width:Int, height:Int) extends App(width, height) {
     //       stage += c1
     //     }
 
-    val b1 = new Bubble(100)
+    val b1 = new Bubble(60)
     b1.x = 200
     b1.y = 200
     stage += b1

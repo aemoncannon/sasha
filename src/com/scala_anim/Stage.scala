@@ -47,7 +47,7 @@ class Stage() extends Sprite {
 
 class BackStage() extends Sprite {
   override def addToInitialParent(){}
-  override protected def redrawPartially(g:Graphics2D) {}
+  override protected def redrawPartially(g:Graphics2D, clip:Rect) {}
   override protected def redrawCompletely(g:Graphics2D) {}
   override def containsGlobalPoint(pt:Pt):Boolean = false
   override def containsPoint(pt:Pt):Boolean = false
