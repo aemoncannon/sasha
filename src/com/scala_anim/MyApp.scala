@@ -13,6 +13,10 @@ class MyApp(width:Int, height:Int) extends App(width, height) {
     b1.x = 200
     b1.y = 200
     stage += b1
+
+    val c1 = new CircleSprite(20)
+    stage += c1
+    Anim.tweenXY(c1, 400, 400, 300, Easing.LINEAR_NONE)    
   }
 
   override def stopApp(){
