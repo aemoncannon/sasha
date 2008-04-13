@@ -21,9 +21,11 @@ class MyApp(width:Int, height:Int) extends App(width, height) {
     b1.y = 200
     stage += b1
 
-    val c1 = new CircleSprite(40)
+    val c1 = new RectSprite(30, 100)
     stage += c1
-    Anim.tweenXY(c1, 400, 400, 100, Easing.LINEAR_NONE)    
+    c1.x = 300
+    c1.y = 300
+    Anim.tweenRotation(c1, Math.Pi.toFloat * 20.0f, 600, Easing.LINEAR_NONE)    
   }
 
   override def stopApp(){

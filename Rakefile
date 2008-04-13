@@ -56,7 +56,11 @@ task :serve => [] do
 end
 
 task :run => [] do
-  system "scala.bat -classpath #{CLASS_PATH} com.scala_anim.MyAppRunner"
+  system "java -classpath classes/scala-library.jar;#{CLASS_PATH} com.scala_anim.MyAppRunner"
+end
+
+task :profile => [] do
+  system "java -javaagent:c:/java_profile/profile/profile.jar -classpath classes/scala-library.jar;#{CLASS_PATH} com.scala_anim.MyAppRunner"
 end
 
 task :compile_and_run => [:compile, :run]
